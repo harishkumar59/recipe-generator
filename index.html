@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recipe Generator</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Recipe Generator</h1>
+            <p>Enter ingredients separated by commas and let AI create a recipe for you!</p>
+        </header>
+        
+        <main>
+            <div class="input-section">
+                <textarea id="ingredients-input" placeholder="e.g., chicken, rice, tomatoes, onions"></textarea>
+                <button id="generate-btn">Generate Recipe</button>
+            </div>
+            
+            <div class="loader" id="loader">
+                <div class="spinner"></div>
+                <p>Cooking up your recipe...</p>
+            </div>
+            
+            <div class="recipe-section" id="recipe-section">
+                <div class="recipe-header">
+                    <h2 id="recipe-title">Your Recipe</h2>
+                    <button id="copy-btn" title="Copy to clipboard">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="recipe-content"></div>
+            </div>
+            
+            <div class="error-message" id="error-message"></div>
+            
+            <div class="recent-searches" id="recent-searches">
+                <h3>Recent Searches</h3>
+                <ul id="recent-list"></ul>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Powered by AI • Using Hugging Face's bloomz-560m model</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
