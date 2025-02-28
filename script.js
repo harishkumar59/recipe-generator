@@ -11,11 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const recentList = document.getElementById('recent-list');
     const recentSearches = document.getElementById('recent-searches');
     
-    // Update the API URL to be environment-aware
-    const API_URL = process.env.NODE_ENV === 'production'
-        ? 'https://recipe-generator-11cu.onrender.com'  // Replace with your deployed backend URL
-        : 'http://localhost:3002/generate-recipe';
-    
     // Load recent searches from local storage  
     let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
     updateRecentSearches();
@@ -48,16 +43,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({ ingredients })
             });
             
-            if (! response.ok) {
+            if (!response.ok) {
                 throw new Error('Failed to generate recipe');
             }
             
             const data = await response.json();
-            
-            // Process and display the recipe
             displayRecipe(data.recipe, ingredients);
-            
-            // Save to recent searches
             saveSearch(ingredients);
             
         } catch (error) {
