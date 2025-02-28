@@ -11,7 +11,11 @@ const PORT = process.env.PORT || 3002;  // Change from 3000 to 3001
 
 // Middleware
 app.use(cors({
-    origin: ['https://harishkumar59.github.io', 'http://localhost:3000', 'http://127.0.0.1:3000'],
+    origin: [
+        'https://harishkumar59.github.io',
+        'http://localhost:3000', 
+        'http://127.0.0.1:3000'
+    ],
     methods: ['GET', 'POST'],
     credentials: true,
     optionsSuccessStatus: 200

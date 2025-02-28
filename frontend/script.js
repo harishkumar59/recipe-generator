@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update API URL based on the current domain
     const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
         ? 'http://localhost:3002/generate-recipe'
-        : 'https://your-app-name.herokuapp.com/generate-recipe';  // Replace with your actual backend URL
+        : 'https://recipe-generator-11cu.onrender.com/generate-recipe';  // Your deployed backend URL
 
     // Rest of your code remains the same...
 }); 
