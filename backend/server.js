@@ -43,46 +43,48 @@ app.post('/generate-recipe', async (req, res) => {
     try {
         const { ingredients } = req.body;
         
-        console.log('Received ingredients:', ingredients);
-        
-        // Validate input
-        if (!ingredients || ingredients.trim() === '') {
-            return res.status(400).json({ error: 'Please provide ingredients' });
+        // Input validation
+        if (!ingredients || typeof ingredients !== 'string' || ingredients.trim() === '') {
+            return res.status(400).json({ 
+                error: 'Invalid input',
+                message: 'Please provide ingredients as a comma-separated string'
+            });
         }
-        
-        // Validate API key
+
+        // API key validation
         if (!HF_API_KEY) {
             console.error('Hugging Face API key is missing');
-            return res.status(500).json({ error: 'Server configuration error' });
+            return res.status(500).json({ 
+                error: 'Configuration Error',
+                message: 'Server is not properly configured'
+            });
         }
-        
-        // Create prompt for the AI model
+
+        // Generate recipe
         const prompt = createRecipePrompt(ingredients);
-        console.log('Generated prompt:', prompt);
-        
-        // Call Hugging Face API
         const recipe = await generateRecipeFromHuggingFace(prompt);
         
         if (!recipe) {
-            return res.status(500).json({ error: 'Failed to generate recipe from AI service' });
+            return res.status(500).json({ 
+                error: 'Generation Failed',
+                message: 'Failed to generate recipe from AI service'
+            });
         }
-        
-        // Parse the recipe text
+
+        // Parse and return recipe
         const parsedRecipe = parseRecipeText(recipe, ingredients);
-        
-        // Return the recipe
         res.json({ recipe: parsedRecipe });
-        
+
     } catch (error) {
-        console.error('Error generating recipe:', {
+        console.error('Recipe generation error:', {
             message: error.message,
             stack: error.stack,
-            ingredients: req.body.ingredients
+            ingredients: req.body?.ingredients
         });
-        
+
         res.status(500).json({ 
-            error: 'Failed to generate recipe', 
-            message: error.message
+            error: 'Server Error',
+            message: 'Failed to generate recipe. Please try again.'
         });
     }
 });
@@ -210,5 +212,6 @@ function parseRecipeText(text, rawIngredients) {
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    console.log('API Key status:', HF_API_KEY ? 'Present' : 'Missing');
 }); 
 
