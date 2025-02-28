@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update the API URL to be environment-aware
     const API_URL = process.env.NODE_ENV === 'production'
-        ? 'https://your-backend-url.herokuapp.com/generate-recipe'  // Replace with your deployed backend URL
+        ? 'https://recipe-generator-11cu.onrender.com'  // Replace with your deployed backend URL
         : 'http://localhost:3002/generate-recipe';
     
     // Load recent searches from local storage  
