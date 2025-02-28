@@ -50,20 +50,13 @@
             <p>Powered by AI • Using Hugging Face's bloomz-560m model</p>
         </footer>
     </div>
-    <div class="container">
-        <!-- ... rest of your HTML ... -->
-    </div>
     
-    <!-- Update the script path -->
+    <!-- Define API_URL directly -->
     <script>
-        // Add this configuration object before loading the main script
-        const config = {
-            apiUrl: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                ? 'http://localhost:3002/generate-recipe'
-                : 'https://recipe-generator-11cu.onrender.com/generate-recipe'
-        };
+        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3002/generate-recipe'
+            : 'https://recipe-generator-11cu.onrender.com/generate-recipe';
     </script>
-    
     <script src="script.js"></script>
 </body>
 </html>

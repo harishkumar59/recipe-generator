@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const recentList = document.getElementById('recent-list');
     const recentSearches = document.getElementById('recent-searches');
     
+    // Use API_URL defined in index.html
+    if (typeof API_URL === 'undefined') {
+        console.error('API_URL is not defined');
+        return;
+    }
+    
     // Load recent searches from local storage  
     let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
     updateRecentSearches();

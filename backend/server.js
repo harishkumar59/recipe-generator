@@ -20,6 +20,13 @@ app.use(cors({
     credentials: true,
     optionsSuccessStatus: 200
 }));
+
+// Add headers middleware
+app.use((req, res, next) => {
+    res.setHeader('Permissions-Policy', 'interest-cohort=()');
+    next();
+});
+
 app.use(express.json());
 
 // Hugging Face API configuration
