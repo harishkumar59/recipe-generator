@@ -49,15 +49,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({ ingredients })
             });
             
+            const data = await response.json();
+            
             if (!response.ok) {
-                throw new Error('Failed to generate recipe');
+                throw new Error(data.message || data.error || 'Failed to generate recipe');
             }
             
-            const data = await response.json();
             displayRecipe(data.recipe, ingredients);
             saveSearch(ingredients);
             
         } catch (error) {
+            console.error('Error:', error);
             showError(error.message || 'Something went wrong. Please try again.');
         } finally {
             loader.style.display = 'none';

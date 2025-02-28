@@ -50,12 +50,22 @@ app.post('/generate-recipe', async (req, res) => {
             return res.status(400).json({ error: 'Please provide ingredients' });
         }
         
+        // Validate API key
+        if (!HF_API_KEY) {
+            console.error('Hugging Face API key is missing');
+            return res.status(500).json({ error: 'Server configuration error' });
+        }
+        
         // Create prompt for the AI model
         const prompt = createRecipePrompt(ingredients);
         console.log('Generated prompt:', prompt);
         
         // Call Hugging Face API
         const recipe = await generateRecipeFromHuggingFace(prompt);
+        
+        if (!recipe) {
+            return res.status(500).json({ error: 'Failed to generate recipe from AI service' });
+        }
         
         // Parse the recipe text
         const parsedRecipe = parseRecipeText(recipe, ingredients);
@@ -64,14 +74,15 @@ app.post('/generate-recipe', async (req, res) => {
         res.json({ recipe: parsedRecipe });
         
     } catch (error) {
-        console.error('Detailed error:', {
+        console.error('Error generating recipe:', {
             message: error.message,
-            stack: error.stack
+            stack: error.stack,
+            ingredients: req.body.ingredients
         });
+        
         res.status(500).json({ 
             error: 'Failed to generate recipe', 
-            details: error.message,
-            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+            message: error.message
         });
     }
 });
@@ -92,8 +103,7 @@ Format the recipe with clear sections.`;
 // Call Hugging Face API to generate recipe
 async function generateRecipeFromHuggingFace(prompt) {
     try {
-        console.log('Attempting API call with prompt:', prompt);
-        console.log('API Key status:', HF_API_KEY ? 'Present' : 'Missing');
+        console.log('Calling Hugging Face API with prompt:', prompt);
         
         const response = await axios.post(
             HF_API_URL,
@@ -106,17 +116,16 @@ async function generateRecipeFromHuggingFace(prompt) {
             }
         );
         
-        console.log('API Response:', response.data);
-        return response.data[0].generated_text || '';
+        console.log('Hugging Face API response:', response.data);
+        return response.data[0].generated_text;
         
     } catch (error) {
-        console.error('Detailed Hugging Face API error:', {
-            message: error.message,
-            response: error.response?.data,
+        console.error('Hugging Face API error:', {
             status: error.response?.status,
-            headers: error.response?.headers
+            data: error.response?.data,
+            message: error.message
         });
-        throw new Error(`Failed to generate recipe: ${error.message}`);
+        throw new Error(`Hugging Face API error: ${error.message}`);
     }
 }
 
